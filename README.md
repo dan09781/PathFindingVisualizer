@@ -26,5 +26,5 @@ java -cp src/classes PathFinder
 ```
 
 ## Features
-![asdasd](/Users/danielmin/Desktop/ProjectPictures/PathFinder/MainScreen.png?raw=true "asd")
+![](img/MainScreen.png)
 
