@@ -15,3 +15,13 @@ This command creates a folder and stores the compiled .class files in that folde
 javac -d src/classes -sourcepath src/ src/PathFinder.java
 ```
 
+### Running the program
+```
+java -cp <class-path> <class-name>
+```
+
+#### Exmaple:
+```
+java -cp src/classes PathFinder
+```
+
