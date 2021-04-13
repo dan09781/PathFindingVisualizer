@@ -4,4 +4,5 @@ Java application for visualizing pathfinding algorithms. Implemented Dijkstra an
 
 ## How to run
 ### Compiling the program
+'javac -d <relative-path-to-class-directory> -sourcepath src/ <relative-path-to-java-source-file>'
 
