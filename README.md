@@ -2,7 +2,6 @@
 
 Java application for visualizing pathfinding algorithms. Implemented Dijkstra and A* algorithms with various user-controlled parameters
 
-## How to run
 ## Compiling the program
 ```
 javac -d <relative-path-to-class-directory> -sourcepath <relative-path-to-source-directory> <relative-path-to-java-source-file>
@@ -15,7 +14,7 @@ This command creates a folder and stores the compiled .class files in that folde
 javac -d src/classes -sourcepath src/ src/PathFinder.java
 ```
 
-### Running the program
+## Running the program
 ```
 java -cp <class-path> <class-name>
 ```
