@@ -26,5 +26,7 @@ java -cp src/classes PathFinder
 ```
 
 ## Features
+...
 ![asdasd](/Users/danielmin/Desktop/Project Pictures/PathFinder/MainScreen.png)
+...
 
