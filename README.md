@@ -9,4 +9,5 @@ javac -d <relative-path-to-class-directory> -sourcepath <relative-path-to-source
 ```
 1. Specify the path to a folder that will store the compiled .class files using `-d` option
 2. Specify the directory where the java source file is and the path to actual java source file using the `-sourcepath` option
+#### Example:
 
