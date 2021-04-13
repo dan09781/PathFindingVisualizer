@@ -1,6 +1,5 @@
 # Path Finding Visualizer
 
-Data structures implementations in Java
-
+Java application for visualizing pathfinding algorithms. Implemented Dijkstra and A* algorithms with various user-controlled parameters
 
 
