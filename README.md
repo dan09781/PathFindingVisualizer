@@ -18,6 +18,7 @@ javac -d src/classes -sourcepath src/ src/PathFinder.java
 ```
 java -cp <class-path> <class-name>
 ```
+This command navigates to the folder that stores the compiled .class files and runs the .class file of the specified name
 
 #### Exmaple:
 ```
