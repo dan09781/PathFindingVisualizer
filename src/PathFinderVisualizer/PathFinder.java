@@ -25,43 +25,43 @@ import javax.swing.JComboBox;
 
 public class PathFinder{
     //Grid variables
-    int startx = -1, starty = -1, finishx = -1, finishy = -1;
-    int tool = 0;
-    int curAlg = 0;
-    int WIDTH = 850;
-    int HEIGHT = 800;
-    int GRIDSIZE = 650;
-    int numCellsEachRow = 20;
-    int CELLSIZE = GRIDSIZE/numCellsEachRow;
+    private int startx = -1, starty = -1, finishx = -1, finishy = -1;
+    private int tool = 0;
+    private int curAlg = 0;
+    private int WIDTH = 850;
+    private int HEIGHT = 800;
+    private int GRIDSIZE = 650;
+    private int numCellsEachRow = 20;
+    private int CELLSIZE = GRIDSIZE/numCellsEachRow;
 
     //Pathfinding algorithm in process of solving indicator
-    boolean solving = false;
+    private boolean solving = false;
 
-    String[] algorithms = {"Dijkstra","A*"};
-    String[] tools = {"Start","End","Obstacle", "Eraser"};
-    JFrame frame;
+    private String[] algorithms = {"Dijkstra","A*"};
+    private String[] tools = {"Start","End","Obstacle", "Eraser"};
+    private JFrame frame;
 
-    Random r = new Random();
-    GridUpdator gridUpdator = new GridUpdator(5);
-    JSlider size = new JSlider(1,10,2);
-    JSlider speed = new JSlider(0,50, gridUpdator.getDelay());
-    JSlider obstacles = new JSlider(1,100,50);
-    JLabel algL = new JLabel("Pick an algorithm");
-    JLabel toolL = new JLabel("Toolbox");
-    JLabel sizeL = new JLabel("Size:");
-    JLabel cellsL = new JLabel(numCellsEachRow+"x"+numCellsEachRow);
-    JLabel delayL = new JLabel("Delay:");
-    JLabel msL = new JLabel(gridUpdator.getDelay()+"ms");
-    JButton searchB = new JButton("Find Path");
-    JButton resetB = new JButton("Reset Path");
-    JButton clearMapB = new JButton("Clear Grid");
-    JComboBox algorithmsBx = new JComboBox(algorithms);
-    JComboBox toolBx = new JComboBox(tools);
-    JPanel toolP = new JPanel();
+    private Random r = new Random();
+    private GridUpdator gridUpdator = new GridUpdator(5);
+    private JSlider size = new JSlider(1,10,2);
+    private JSlider speed = new JSlider(0,50, gridUpdator.getDelay());
+    private JSlider obstacles = new JSlider(1,100,50);
+    private JLabel algL = new JLabel("Pick an algorithm");
+    private JLabel toolL = new JLabel("Toolbox");
+    private JLabel sizeL = new JLabel("Size:");
+    private JLabel cellsL = new JLabel(numCellsEachRow+"x"+numCellsEachRow);
+    private JLabel delayL = new JLabel("Delay:");
+    private JLabel msL = new JLabel(gridUpdator.getDelay()+"ms");
+    private JButton searchB = new JButton("Find Path");
+    private JButton resetB = new JButton("Reset Path");
+    private JButton clearMapB = new JButton("Clear Grid");
+    private JComboBox algorithmsBx = new JComboBox(algorithms);
+    private JComboBox toolBx = new JComboBox(tools);
+    private JPanel toolP = new JPanel();
 
-    Node[][] map;
-    Grid canvas;
-    Border ehtchedLower = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
+    private Node[][] map;
+    private Grid canvas;
+    private Border ehtchedLower = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 
     //Initialize algorithm object
     Algorithm Alg = new Algorithm();
@@ -200,11 +200,13 @@ public class PathFinder{
     }
 
     PathFinder() {
-        gridUpdator.clearMap();
         Initialize();
     }
 
     private void Initialize() {
+        //Draw the map
+        gridUpdator.clearMap();
+
         frame = new JFrame();
         frame.setVisible(true);
         frame.setResizable(true);
@@ -300,7 +302,6 @@ public class PathFinder{
             public void stateChanged(ChangeEvent e) {
                 numCellsEachRow = size.getValue()*10;
                 cellsL.setText(numCellsEachRow+"x"+numCellsEachRow);
-                msL.setText(gridUpdator.getDelay()+"ms");
                 gridUpdator.clearMap();
                 solving = false;
                 gridUpdator.updateMap();
@@ -310,6 +311,7 @@ public class PathFinder{
             @Override
             public void stateChanged(ChangeEvent e) {
                 gridUpdator.setDelay(speed.getValue());
+                msL.setText(gridUpdator.getDelay()+"ms");
                 gridUpdator.updateMap();
             }
         });
@@ -322,7 +324,7 @@ public class PathFinder{
         run();
     }
 
-
+    //Main driver method
     public void run() {
         while (true) {
             while (!solving) {
