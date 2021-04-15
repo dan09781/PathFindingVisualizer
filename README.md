@@ -11,7 +11,7 @@ This command creates a folder and stores the compiled .class files in that folde
 2. Specify the directory where the java source file is and the path to actual java source file using the `-sourcepath` option
 #### Example:
 ```
-javac -d src/classes -sourcepath src/ src/PathFinder.java
+javac -d src/classes -sourcepath src/PathFinderVisualizer src/PathFinderVisualizer/PathFinder.java
 ```
 
 ## Running the program
