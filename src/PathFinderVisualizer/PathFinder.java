@@ -1,3 +1,5 @@
+package PathFinderVisualizer;
+
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -7,11 +9,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-import java.util.Comparator;
 import java.util.Random;
-import java.lang.Math;
 
 import javax.swing.JFrame;
 import javax.swing.BorderFactory;
@@ -25,24 +23,35 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JComboBox;
 
-
 public class PathFinder{
+    //Grid variables
+    int startx = -1, starty = -1, finishx = -1, finishy = -1;
+    int tool = 0;
+    int curAlg = 0;
+    int WIDTH = 850;
+    int HEIGHT = 800;
+    int GRIDSIZE = 650;
     int numCellsEachRow = 20;
-    int delay = 5;
+    int CELLSIZE = GRIDSIZE/numCellsEachRow;
+
+    //Pathfinding algorithm in process of solving indicator
+    boolean solving = false;
+
     String[] algorithms = {"Dijkstra","A*"};
     String[] tools = {"Start","End","Obstacle", "Eraser"};
     JFrame frame;
-    Algorithm Alg = new Algorithm();
+
     Random r = new Random();
+    GridUpdator gridUpdator = new GridUpdator(5);
     JSlider size = new JSlider(1,10,2);
-    JSlider speed = new JSlider(0,50,delay);
+    JSlider speed = new JSlider(0,50, gridUpdator.getDelay());
     JSlider obstacles = new JSlider(1,100,50);
     JLabel algL = new JLabel("Pick an algorithm");
     JLabel toolL = new JLabel("Toolbox");
     JLabel sizeL = new JLabel("Size:");
     JLabel cellsL = new JLabel(numCellsEachRow+"x"+numCellsEachRow);
     JLabel delayL = new JLabel("Delay:");
-    JLabel msL = new JLabel(delay+"ms");
+    JLabel msL = new JLabel(gridUpdator.getDelay()+"ms");
     JButton searchB = new JButton("Find Path");
     JButton resetB = new JButton("Reset Path");
     JButton clearMapB = new JButton("Clear Grid");
@@ -53,164 +62,19 @@ public class PathFinder{
     Node[][] map;
     Grid canvas;
     Border ehtchedLower = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
-    //GENERAL VARIABLES
-    int startx = -1, starty = -1, finishx = -1, finishy = -1;
-    int tool = 0;
-    int curAlg = 0;
-    int WIDTH = 850;
-    int HEIGHT = 800;
-    int GRIDSIZE = 650;
-    int CELLSIZE = GRIDSIZE/numCellsEachRow;
-    //BOOLEANS
-    boolean solving = false;
 
-    class Algorithm {
-
-        class PathWithDistance{
-            ArrayList<Node> path;
-            int distance;
-
-            public PathWithDistance(ArrayList<Node> otherPath, int dist){
-                path = otherPath;
-                distance = dist;
-            }
-
-            public ArrayList<Node> getKey(){return path;}
-            public int getValue(){return distance;}
-        }
+    //Initialize algorithm object
+    Algorithm Alg = new Algorithm();
 
 
-        //Comparator for comparing distance to a node
-        class nodeCompare implements Comparator<PathWithDistance> {
-            public int compare(PathWithDistance a, PathWithDistance b){
-                if (a.getValue() >= b.getValue())
-                    return 1;
-                else
-                    return -1;
-            }
-        }
-
-        //Dijkstra implementation
-        public void Dijkstra() {
-            PriorityQueue<PathWithDistance> paths = new PriorityQueue<PathWithDistance>(new nodeCompare());
-            ArrayList<Node> startNode = new ArrayList<Node>();
-            startNode.add(map[startx][starty]);
-            PathWithDistance startPath = new PathWithDistance(startNode,0);
-            paths.add(startPath);
-            while (paths.size() > 0 && solving){
-                PathWithDistance curPath = paths.poll();
-                Node lastNodeInPath = curPath.getKey().get(curPath.getKey().size()-1);
-                if (lastNodeInPath.x == finishx && lastNodeInPath.y == finishy){
-                    solving = false;
-                    colorPath(curPath.getKey());
-                    return;
-                }
-                if (lastNodeInPath.x != startx || lastNodeInPath.y != starty)
-                    map[lastNodeInPath.x][lastNodeInPath.y].setType(4);
-                ArrayList<Node> currentNeighbors = new ArrayList<Node>();
-                currentNeighbors = getNeighbors(lastNodeInPath);
-                for (int i=0;i<currentNeighbors.size();i++){
-                    Node curNeighbor = currentNeighbors.get(i);
-                    if (!map[curNeighbor.x][curNeighbor.y].visited){
-                        map[curNeighbor.x][curNeighbor.y].visited = true;
-                        int newDist = curPath.getValue() + 1;
-                        ArrayList<Node> newPath = new ArrayList<>(curPath.getKey());
-                        newPath.add(curNeighbor);
-                        PathWithDistance newEntry = new PathWithDistance(newPath,newDist);
-                        paths.add(newEntry);
-                    }
-                }
-                updateMap();
-                delay();
-            }
-            solving=false;
-            return;
-        }
-
-        //A* implementation with euclidean distance heuristics
-        public void AStar() {
-            setHeuristic();
-            PriorityQueue<PathWithDistance> paths = new PriorityQueue<PathWithDistance>(new nodeCompare());
-            ArrayList<Node> startNode = new ArrayList<Node>();
-            startNode.add(map[startx][starty]);
-            PathWithDistance startPath = new PathWithDistance(startNode,0);
-            paths.add(startPath);
-            while (paths.size() > 0 && solving){
-                PathWithDistance curPath = paths.poll();
-                Node lastNodeInPath = curPath.getKey().get(curPath.getKey().size()-1);
-                if (lastNodeInPath.x == finishx && lastNodeInPath.y == finishy){
-                    solving = false;
-                    colorPath(curPath.getKey());
-                    return;
-                }
-                if (lastNodeInPath.x != startx || lastNodeInPath.y != starty)
-                    map[lastNodeInPath.x][lastNodeInPath.y].setType(4);
-                ArrayList<Node> currentNeighbors = new ArrayList<Node>();
-                currentNeighbors = getNeighbors(lastNodeInPath);
-                for (int i=0;i<currentNeighbors.size();i++){
-                    Node curNeighbor = currentNeighbors.get(i);
-                    if (!map[curNeighbor.x][curNeighbor.y].visited){
-                        map[curNeighbor.x][curNeighbor.y].visited = true;
-                        int newDist = curPath.getValue() + (int)(map[curNeighbor.x][curNeighbor.y].heuristic)*5;
-                        ArrayList<Node> newPath = new ArrayList<>(curPath.getKey());
-                        newPath.add(curNeighbor);
-                        PathWithDistance newEntry = new PathWithDistance(newPath,newDist);
-                        paths.add(newEntry);
-                    }
-                }
-                updateMap();
-                delay();
-            }
-            solving=false;
-            return;
-        }
-
-        private ArrayList<Node> getNeighbors(Node current) {
-            ArrayList<Node> neighbors = new ArrayList<Node>();
-            if (current.x-1 >= 0 && map[current.x-1][current.y].getType() != 2)
-                neighbors.add(map[current.x-1][current.y]);
-            if (current.x+1 <= numCellsEachRow-1 && map[current.x+1][current.y].getType() != 2)
-                neighbors.add(map[current.x+1][current.y]);
-            if (current.y-1 >= 0 && map[current.x][current.y-1].getType() != 2)
-                neighbors.add(map[current.x][current.y-1]);
-            if (current.y+1 <= numCellsEachRow-1 && map[current.x][current.y+1].getType() != 2)
-                neighbors.add(map[current.x][current.y+1]);
-            return neighbors;
-        }
-
-        //Euclidean distance heuristic
-        private void setHeuristic(){
-            for (int x = 0;x<numCellsEachRow;x++){
-                for (int y=0;y<numCellsEachRow;y++){
-                    double distanceHeuristic = getEuclideanDistance(x, y, finishx, finishy);
-                    map[x][y].heuristic = distanceHeuristic;
-                }
-            }
-        }
-
-        private double getEuclideanDistance(int curx, int cury, int finishx, int finishy){
-            return 10*Math.sqrt((finishx-curx)*(finishx-curx) + (finishy-cury)*(finishy-cury));
-        }
-
-        //Once a path has been found, color it
-        private void colorPath(ArrayList<Node> finalPath){
-            for (int i=1;i<finalPath.size()-1;i++){
-                finalPath.get(i).setType(5);
-                updateMap();
-                delay();
-            }
-        }
-    }
-
-
-    private class Node {
+    static class Node {
         int cellType;
         int x;
         int y;
         double heuristic = 0;
         boolean visited = false;
 
-        public Node(int otherType, int otherx, int othery) {
+        Node(int otherType, int otherx, int othery) {
             cellType = otherType;
             x = otherx;
             y = othery;
@@ -226,12 +90,12 @@ public class PathFinder{
 
     class Grid extends JPanel implements MouseListener, MouseMotionListener{	//Grid class
 
-        public Grid() {
+        Grid() {
             addMouseListener(this);
             addMouseMotionListener(this);
         }
 
-        public void paintComponent(Graphics g) {	//REPAINT
+        public void paintComponent(Graphics g) {
             super.paintComponent(g);
             for(int x = 0; x < numCellsEachRow; x++) {	//PAINT EACH NODE IN THE GRID
                 for(int y = 0; y < numCellsEachRow; y++) {
@@ -277,7 +141,7 @@ public class PathFinder{
                 Node current = map[x][y];
                 if((tool == 2 || tool == 3) && (current.getType() != 0 && current.getType() != 1))
                     current.setType(tool);
-                updateMap();
+                gridUpdator.updateMap();
             } catch(Exception z) {}
         }
 
@@ -295,7 +159,7 @@ public class PathFinder{
 
         @Override
         public void mousePressed(MouseEvent e) {
-            resetMap();
+            gridUpdator.resetMap();
             try {
                 int x = e.getX()/CELLSIZE;	//GET THE X AND Y OF THE MOUSE CLICK IN RELATION TO THE SIZE OF THE GRID
                 int y = e.getY()/CELLSIZE;
@@ -327,7 +191,7 @@ public class PathFinder{
                             current.setType(tool);
                         break;
                 }
-                updateMap();
+                gridUpdator.updateMap();
             } catch(Exception z) {}
         }
 
@@ -335,8 +199,8 @@ public class PathFinder{
         public void mouseReleased(MouseEvent e) {}
     }
 
-    public PathFinder() {
-        clearMap();
+    PathFinder() {
+        gridUpdator.clearMap();
         Initialize();
     }
 
@@ -398,6 +262,8 @@ public class PathFinder{
             @Override
             public void actionPerformed(ActionEvent e) {
                 solving = false;
+
+                //Start solving if there exist valid starting and ending nodes
                 if((startx > -1 && starty > -1) && (finishx > -1 && finishy > -1))
                     solving = true;
             }
@@ -405,22 +271,22 @@ public class PathFinder{
         resetB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                resetMap();
-                updateMap();
+                gridUpdator.resetMap();
+                gridUpdator.updateMap();
             }
         });
         clearMapB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clearMap();
-                updateMap();
+                gridUpdator.clearMap();
+                gridUpdator.updateMap();
             }
         });
         algorithmsBx.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 curAlg = algorithmsBx.getSelectedIndex();
-                updateMap();
+                gridUpdator.updateMap();
             }
         });
         toolBx.addItemListener(new ItemListener() {
@@ -433,22 +299,26 @@ public class PathFinder{
             @Override
             public void stateChanged(ChangeEvent e) {
                 numCellsEachRow = size.getValue()*10;
-                clearMap();
+                cellsL.setText(numCellsEachRow+"x"+numCellsEachRow);
+                msL.setText(gridUpdator.getDelay()+"ms");
+                gridUpdator.clearMap();
                 solving = false;
-                updateMap();
+                gridUpdator.updateMap();
             }
         });
         speed.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                delay = speed.getValue();
-                updateMap();
+                gridUpdator.setDelay(speed.getValue());
+                gridUpdator.updateMap();
             }
         });
 
         canvas = new Grid();
         canvas.setBounds((WIDTH-GRIDSIZE)/2,100,GRIDSIZE, GRIDSIZE);
         frame.getContentPane().add(canvas);
+
+        //Run the program
         run();
     }
 
@@ -456,56 +326,75 @@ public class PathFinder{
     public void run() {
         while (true) {
             while (!solving) {
-                delay();
+                gridUpdator.delay();
             }
 
             if (curAlg == 0) {
-                Alg.Dijkstra();
+                Alg.Dijkstra(map, startx, starty, finishx, finishy, gridUpdator);
+                solving = false;
             }
             else if (curAlg == 1){
-                Alg.AStar();
+                Alg.AStar(map, startx, starty, finishx, finishy, gridUpdator);
+                solving = false;
             }
         }
     }
 
-    public void delay() {	//DELAY METHOD
-        try {
-            Thread.sleep(delay);
-        } catch(Exception e) {}
-    }
+    public class GridUpdator {
 
-    public void updateMap() {	//updateMap ELEMENTS OF THE GUI
-        CELLSIZE = GRIDSIZE/numCellsEachRow;
-        canvas.repaint();
-        cellsL.setText(numCellsEachRow+"x"+numCellsEachRow);
-        msL.setText(delay+"ms");
-    }
+        private int delay;
 
 
-    public void clearMap() {	//CLEAR MAP
-        map = new Node[numCellsEachRow][numCellsEachRow];
-        for(int x = 0; x < numCellsEachRow; x++) {
-            for(int y = 0; y < numCellsEachRow; y++) {
-                map[x][y] = new Node(3,x,y);
-            }
+        GridUpdator(int otherDelay){
+            delay=otherDelay;
         }
-        startx = -1;
-        finishx = -1;
-        starty = -1;
-        finishy = -1;
-        solving = false;
-    }
 
-    public void resetMap() {
-        for(int x = 0; x < numCellsEachRow; x++) {
-            for (int y = 0; y < numCellsEachRow; y++) {
-                Node current = map[x][y];
-                map[x][y].visited = false;
-                if (current.getType() == 4 || current.getType() == 5)
-                    map[x][y] = new Node(3, x, y);
-            }
+        public void setDelay(int otherDelay){
+            delay=otherDelay;
         }
-        solving = false;
+
+        public int getDelay(){
+            return this.delay;
+        }
+
+        public void delay() {	//DELAY METHOD
+            try {
+                Thread.sleep(delay);
+            } catch(Exception e) {}
+        }
+
+        public void updateMap() {	//updateMap ELEMENTS OF THE GUI
+            CELLSIZE = GRIDSIZE/numCellsEachRow;
+            canvas.repaint();
+        }
+
+
+        public void clearMap() {	//CLEAR MAP
+            //Square 2d-array
+            map = new Node[numCellsEachRow][numCellsEachRow];
+            for(int x = 0; x < numCellsEachRow; x++) {
+                for(int y = 0; y < numCellsEachRow; y++) {
+                    map[x][y] = new Node(3,x,y);
+                }
+            }
+            startx = -1;
+            finishx = -1;
+            starty = -1;
+            finishy = -1;
+            solving = false;
+        }
+
+        public void resetMap() {
+            for(int x = 0; x < numCellsEachRow; x++) {
+                for (int y = 0; y < numCellsEachRow; y++) {
+                    Node current = map[x][y];
+                    map[x][y].visited = false;
+                    if (current.getType() == 4 || current.getType() == 5)
+                        map[x][y] = new Node(3, x, y);
+                }
+            }
+            solving = false;
+        }
     }
 
     public static void main(String[] args) {    //MAIN METHOD
