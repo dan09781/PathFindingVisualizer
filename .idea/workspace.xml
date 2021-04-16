@@ -1,18 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="409c433b-dbbf-486c-9fc1-cba8db3f9485" name="Default Changelist" comment="" />
+    <list default="true" id="409c433b-dbbf-486c-9fc1-cba8db3f9485" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PathFinder.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PathFinder.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$Algorithm$PathWithDistance.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$Algorithm$nodeCompare.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$Algorithm.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$Grid.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder$Node.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PathFinder/PathFinder.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$Algorithm$PathWithDistance.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$Algorithm$PathWithDistance.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$Algorithm$nodeCompare.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$Algorithm$nodeCompare.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$Algorithm.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$Algorithm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$Grid.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$Grid.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder$Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder$Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/PathFinder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PathFinder.java" beforeDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1Rue7vORqhSoVjfR3OjUecVJWWy" />
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RunAnythingCache">
     <option name="myCommands">
@@ -59,5 +103,16 @@
       <updated>1570521245141</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

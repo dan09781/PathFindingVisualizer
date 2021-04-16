@@ -8,21 +8,21 @@ javac -d <relative-path-to-class-directory> -sourcepath <relative-path-to-source
 ```
 This command creates a folder and stores the compiled .class files in that folder. In more detail:
 1. Specify the path to a folder that will store the compiled .class files using `-d` option
-2. Specify the directory where the java source file is and the path to actual java source file using the `-sourcepath` option
+2. Specify the directory where the source files are and the path to actual source files using the `-sourcepath` option
 #### Example:
 ```
-javac -d src/classes -sourcepath src/ src/PathFinder.java
+javac -d src/classes -sourcepath src/PathFinderVisualizer src/PathFinderVisualizer/*.java
 ```
 
 ## Running the program
 ```
-java -cp <class-path> <class-name>
+java -cp <class-path> <full-class-name>
 ```
 This command navigates to the specified class path, set with `-cp` option, that stores the compiled .class files and runs the .class file of the specified name
 
 #### Exmaple:
 ```
-java -cp src/classes PathFinder
+java -cp src/classes PathFinderVisualizer.PathFinder
 ```
 
 ## Features
