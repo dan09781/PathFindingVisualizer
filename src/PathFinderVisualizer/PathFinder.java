@@ -34,10 +34,7 @@ public class PathFinder{
     private int numCellsEachRow = 20;
     private int CELLSIZE = GRIDSIZE/numCellsEachRow;
 
-    //Pathfinding algorithm in process of solving indicator
-    private boolean solving = false;
-
-    private String[] algorithms = {"Dijkstra","A*"};
+    private String[] algorithms = {"Dijkstra","A*","DFS"};
     private String[] tools = {"Start","End","Obstacle", "Eraser"};
     private JFrame frame;
 
@@ -263,11 +260,10 @@ public class PathFinder{
         searchB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                solving = false;
 
                 //Start solving if there exist valid starting and ending nodes
                 if((startx > -1 && starty > -1) && (finishx > -1 && finishy > -1))
-                    solving = true;
+                    gridUpdator.solving = true;
             }
         });
         resetB.addActionListener(new ActionListener() {
@@ -303,7 +299,7 @@ public class PathFinder{
                 numCellsEachRow = size.getValue()*10;
                 cellsL.setText(numCellsEachRow+"x"+numCellsEachRow);
                 gridUpdator.clearMap();
-                solving = false;
+                gridUpdator.solving = false;
                 gridUpdator.updateMap();
             }
         });
@@ -327,17 +323,21 @@ public class PathFinder{
     //Main driver method
     public void run() {
         while (true) {
-            while (!solving) {
+            while (!gridUpdator.solving) {
                 gridUpdator.delay();
             }
 
             if (curAlg == 0) {
                 Alg.Dijkstra(map, startx, starty, finishx, finishy, gridUpdator);
-                solving = false;
+                gridUpdator.solving = false;
             }
             else if (curAlg == 1){
                 Alg.AStar(map, startx, starty, finishx, finishy, gridUpdator);
-                solving = false;
+                gridUpdator.solving = false;
+            }
+            else if (curAlg == 2){
+                Alg.DFS(map, startx, starty, finishx, finishy, gridUpdator);
+                gridUpdator.solving = false;
             }
         }
     }
@@ -345,6 +345,9 @@ public class PathFinder{
     public class GridUpdator {
 
         private int delay;
+        //Pathfinding algorithm in process of solving indicator
+        private boolean solving = false;
+
 
 
         GridUpdator(int otherDelay){
@@ -358,6 +361,8 @@ public class PathFinder{
         public int getDelay(){
             return this.delay;
         }
+
+        public boolean getSolving(){ return this.solving;}
 
         public void delay() {	//DELAY METHOD
             try {
